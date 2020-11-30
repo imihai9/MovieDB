@@ -3,11 +3,6 @@ package actions.commands;
 import user.User;
 
 public abstract class Command {
-    //TODO: delete Action id
-    /**
-     * Action id
-     */
-    final int actionId;
     /**
      * User object
      */
@@ -20,19 +15,13 @@ public abstract class Command {
      * Season number
      */
     final int seasonNumber;
-
     /**
-     * Constructor for commands referring to a *Serial*
+     * Constructor for commands
      */
-    public Command(int actionId, User user, String title, int seasonNumber) {
-        this.actionId = actionId;
+    public Command(User user, String title, int seasonNumber) {
         this.user = user;
         this.title = title;
         this.seasonNumber = seasonNumber;
-    }
-
-    public int getActionId() {
-        return actionId;
     }
 
     public User getUser() {

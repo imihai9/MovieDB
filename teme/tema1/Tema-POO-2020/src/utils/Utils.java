@@ -2,13 +2,13 @@ package utils;
 
 import actor.ActorsAwards;
 import common.Constants;
-import entertainment.Genre;
+import data.Data;
+import entertainment.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import user.User;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 /**
  * The class contains static methods that helps with parsing.
@@ -122,5 +122,62 @@ public final class Utils {
         }
 
         return mapVideos;
+    }
+
+    /**
+     * Performs a case insensitive search of all strings from 'words' in 'string' as separate words
+     * @param string - haystack string
+     * @param description - needles (the strings which must be contained in 'string')
+     * @return - boolean value: true if 'string' contains all 'words'
+     */
+    public static boolean containsAllWords(String string, List<String> description) {
+        string = string.toLowerCase();
+        String[] separateWords = string.split("[^a-zA-Z0-9]");
+
+        for (String w1 : description) {
+            boolean foundWord = false;
+            for (String w2 : separateWords) {
+                if (w1.equals(w2)) {
+                    foundWord = true;
+                    break;
+                }
+            }
+
+            if (!foundWord)
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param show - Calculates the number of users that have the show in one of their collections:
+     * @param criteria - Criteria = CRITERIA_FAVOURITE   => Collection = favouriteMovies
+     *                   Criteria = CRITERIA_MOST_VIEWED => Collection = history
+     * @return - the requested number of users
+     */
+    public static Integer getUserStats (Show show, String criteria) {
+        List<User> users = Data.getUsers();
+        String title = show.getTitle();
+
+        Integer cnt = 0;
+
+        if (criteria.equals(Constants.CRITERIA_FAVORITE)) {
+            for (User user : users) {
+                if (user.getFavoriteShows().contains(title))
+                    cnt++;
+            }
+        }
+
+        else if (criteria.equals(Constants.CRITERIA_MOST_VIEWED)) {
+            for (User user : users) {
+                Map<String, Integer> userHistory = user.getHistory();
+
+                if (userHistory.containsKey(title))
+                    cnt += userHistory.get(title);
+            }
+        }
+
+        return cnt;
     }
 }

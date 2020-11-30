@@ -9,8 +9,8 @@ import data.Data;
 public class RatingCommand extends Command{
     private final Double grade;
 
-    public RatingCommand(int actionId, User user, String title, Double grade, int seasonNumber) {
-        super(actionId, user, title, seasonNumber);
+    public RatingCommand(User user, String title, Double grade, int seasonNumber) {
+        super(user, title, seasonNumber);
         this.grade = grade;
     }
 

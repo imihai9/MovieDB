@@ -3,7 +3,11 @@ package user;
 import entertainment.Movie;
 import entertainment.Season;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Information about an user
@@ -24,7 +28,7 @@ public class User  {
     /**
      * Movies added to favorites
      */
-    private final List<String> favoriteMovies;
+    private final List<String> favoriteShows;
     /**
      * Map between movies and the corresponding ratings given by the user
      */
@@ -36,10 +40,10 @@ public class User  {
 
     public User(String username, String subscriptionType,
                          Map<String, Integer> history,
-                         ArrayList<String> favoriteMovies) {
+                         ArrayList<String> favoriteShows) {
         this.username = username;
         this.subscriptionType = subscriptionType;
-        this.favoriteMovies = favoriteMovies;
+        this.favoriteShows = favoriteShows;
         this.history = history;
         movieRatings = new HashMap<Movie, Double>();
         seasonRatings = new HashMap<Season, Double>();
@@ -61,12 +65,12 @@ public class User  {
         return subscriptionType;
     }
 
-    public List<String> getFavoriteMovies() {
-        return Collections.unmodifiableList(favoriteMovies);
+    public List<String> getFavoriteShows() {
+        return Collections.unmodifiableList(favoriteShows);
     }
 
-    public void addFavouriteMovie(String title) {
-        favoriteMovies.add(title);
+    public void addFavoriteShow(String title) {
+        favoriteShows.add(title);
 
     }
     public Map<Movie, Double> getMovieRatings() {
@@ -85,12 +89,16 @@ public class User  {
         seasonRatings.put(season, rating);
     }
 
+    public Integer getTotalRatingsNum() {
+        return movieRatings.size() + seasonRatings.size();
+    }
+
     @Override
     public String toString() {
         return "User{" + "username='"
                 + username + '\'' + ", subscriptionType='"
                 + subscriptionType + '\'' + ", history="
-                + history + ", favoriteMovies="
-                + favoriteMovies + '}';
+                + history + ", favoriteShows="
+                + favoriteShows + '}';
     }
 }

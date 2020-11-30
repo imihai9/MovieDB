@@ -5,8 +5,8 @@ import user.User;
 import java.util.Map;
 
 public class ViewCommand extends Command{
-    public ViewCommand(int actionId, User user, String title, int seasonNumber) {
-        super(actionId, user, title, seasonNumber);
+    public ViewCommand(User user, String title, int seasonNumber) {
+        super(user, title, seasonNumber);
     }
 
     public String execute() {
