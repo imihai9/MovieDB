@@ -78,4 +78,21 @@ public final class Constants {
     public static final String VIEW_COMMAND = "view";
     public static final String FAVORITE_COMMAND = "favorite";
     public static final String RATING_COMMAND = "rating";
+
+    public static final String SORT_ASC = "asc";
+    public static final String SORT_DESC = "desc";
+
+    public static final String CRITERIA_AWARDS = "awards";
+    public static final String CRITERIA_AVERAGE = "average";
+    public static final String CRITERIA_FILTER_DESCRIPTION = "filter_description";
+    public static final String CRITERIA_RATINGS = "ratings";
+    public static final String CRITERIA_FAVORITE = "favorite";
+    public static final String CRITERIA_LONGEST = "longest";
+    public static final String CRITERIA_MOST_VIEWED = "most_viewed";
+
+    public static final String QUERY_RESULT_EMPTY = "Query result: []";
+    public static final String QUERY_RESULT_PREFIX = "Query result: [";
+    public static final String QUERY_RESULT_SUFFIX = "]";
+    public static final String QUERY_RESULT_DELIMITER = ", ";
+    public static final int QUERY_DELIMITER_SIZE = 2;
 }

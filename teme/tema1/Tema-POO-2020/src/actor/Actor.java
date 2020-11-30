@@ -1,8 +1,11 @@
 package actor;
 
 import actor.ActorsAwards;
+import data.Data;
+import entertainment.Show;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,14 +23,14 @@ public class Actor {
     /**
      * videos starring actor
      */
-    private ArrayList<String> filmography;
+    private List<Show> filmography;
     /**
      * awards won by the actor
      */
     private Map<ActorsAwards, Integer> awards;
 
     public Actor(final String name, final String careerDescription,
-                          final ArrayList<String> filmography,
+                          final List<Show> filmography,
                           final Map<ActorsAwards, Integer> awards) {
         this.name = name;
         this.careerDescription = careerDescription;
@@ -43,11 +46,11 @@ public class Actor {
         this.name = name;
     }
 
-    public ArrayList<String> getFilmography() {
+    public List<Show> getFilmography() {
         return filmography;
     }
 
-    public void setFilmography(final ArrayList<String> filmography) {
+    public void setFilmography(final ArrayList<Show> filmography) {
         this.filmography = filmography;
     }
 
@@ -61,6 +64,35 @@ public class Actor {
 
     public void setCareerDescription(final String careerDescription) {
         this.careerDescription = careerDescription;
+    }
+
+    public Double getAvgRating() {
+        if (filmography.isEmpty()) {
+            return -1d;
+        }
+        Double totalRatings = 0d;
+        int numberOfRatings = 0;
+
+        for (Show show:filmography) {
+            Double currentRating = show.getAverageRating();
+            if (currentRating != 0d) {
+                totalRatings += currentRating;
+                numberOfRatings++;
+            }
+        }
+
+        if (numberOfRatings == 0)
+            return -1d;
+        return totalRatings / numberOfRatings;
+    }
+
+    public int getNumOfAwards() {
+        int totalNum = 0;
+        for(Map.Entry<ActorsAwards, Integer> award : awards.entrySet()) {
+            totalNum += award.getValue();
+        }
+
+          return totalNum;
     }
 
     @Override

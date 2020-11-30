@@ -82,7 +82,7 @@ public final class Main {
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
 
-        //TODO add here the entry point to your implementation
+        //Entry point of implementation
 
         Data data = new Data();
         data.readData(input);

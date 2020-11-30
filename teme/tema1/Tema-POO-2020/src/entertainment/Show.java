@@ -1,11 +1,13 @@
 package entertainment;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * General information about show (video)
  */
-public class Show {
+public abstract class Show {
     /**
      * Show's title
      */
@@ -17,14 +19,14 @@ public class Show {
     /**
      * Show casting
      */
-    private final ArrayList<String> cast;
+    private final List<String> cast;
     /**
      * Show genres
      */
-    private final ArrayList<String> genres;
+    private final List<Genre> genres;
 
     public Show(final String title, final int year,
-                     final ArrayList<String> cast, final ArrayList<String> genres) {
+                     final ArrayList<String> cast, final ArrayList<Genre> genres) {
         this.title = title;
         this.year = year;
         this.cast = cast;
@@ -39,11 +41,20 @@ public class Show {
         return year;
     }
 
-    public final ArrayList<String> getCast() {
-        return cast;
+    public final List<String> getCast() {
+        return Collections.unmodifiableList(cast);
     }
 
-    public final ArrayList<String> getGenres() {
-        return genres;
+    public final List<Genre> getGenres() {
+        return Collections.unmodifiableList(genres);
     }
+
+    // To be overridden
+
+    public abstract Double getAverageRating();
+
+    public abstract boolean hasBeenRated();
+
+    public abstract Integer getDuration();
+
 }

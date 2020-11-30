@@ -33,12 +33,24 @@ public final class Season {
         return currentSeason;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
     public List<Double> getRatings() {
         return Collections.unmodifiableList(ratings);
+    }
+
+    public Double getAverageRating() {
+        if (ratings.isEmpty())
+            return 0d;
+
+        Double ratingSum = 0d;
+        for (Double rating:ratings) {
+            ratingSum += rating;
+        }
+
+        return ratingSum / ratings.size();
     }
 
     public void addRating(Double rating) {

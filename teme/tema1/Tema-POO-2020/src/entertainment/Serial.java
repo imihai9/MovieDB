@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Information about a tv show
  */
-public class Serial extends Show{
+public class Serial extends Show {
     /**
      * Number of seasons
      */
@@ -18,7 +18,7 @@ public class Serial extends Show{
     private final List<Season> seasons;
 
     public Serial(final String title, final ArrayList<String> cast,
-                           final ArrayList<String> genres,
+                           final ArrayList<Genre> genres,
                            final int numberOfSeasons, final ArrayList<Season> seasons,
                            final int year) {
         super(title, year, cast, genres);
@@ -32,6 +32,42 @@ public class Serial extends Show{
 
     public List<Season> getSeasons() {
         return Collections.unmodifiableList(seasons);
+    }
+
+    /**
+     * @return - a list containing the average rating for each season
+     */
+
+    @Override
+    public Double getAverageRating() {
+        Double ratingSum = 0d;
+
+        for (Season season:seasons) {
+            ratingSum += season.getAverageRating();
+        }
+
+        return ratingSum / numberOfSeasons;
+    }
+
+    // For ShowQuery -> a serial has been rated if at least a season has been rated
+    @Override
+    public boolean hasBeenRated() {
+        for (Season season:seasons) {
+            if (!season.getRatings().isEmpty())
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Integer getDuration() {
+        Integer totalDuration = 0;
+        for (Season season:seasons) {
+            totalDuration += season.getDuration();
+        }
+
+        return totalDuration;
     }
 
     @Override
