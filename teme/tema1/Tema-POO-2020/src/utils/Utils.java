@@ -177,9 +177,10 @@ public final class Utils {
     }
 
     /**
+     *  Calculates the number of users that have the show in one of their
+     *  collections:
      * @param users    - the list of users
-     * @param show     - Calculates the number of users that have the show in one of their
-     *                 collections:
+     * @param show
      * @param criteria - Criteria = CRITERIA_FAVOURITE   => Collection = favouriteMovies
      *                 Criteria = CRITERIA_MOST_VIEWED => Collection = history
      * @return - the requested number of users

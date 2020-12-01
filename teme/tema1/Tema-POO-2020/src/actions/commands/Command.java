@@ -19,7 +19,6 @@ public abstract class Command {
     /**
      * Constructor for commands
      */
-
     public Command(final User user, final String title, final int seasonNumber) {
         this.user = user;
         this.title = title;
