@@ -5,6 +5,7 @@ import comparators.*;
 import data.Data;
 import entertainment.Genre;
 import entertainment.Show;
+import user.User;
 import utils.Utils;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class ShowQuery extends Query{
     private List<Show> filteredShows;
+    private List<User> users;
     private int year;
     private Genre genre;
 
@@ -25,19 +27,20 @@ public class ShowQuery extends Query{
 
         year = 0;
         genre = null;
+
+        users = Data.getUsers();
     }
 
     @Override
     public String execute(int number, List<List<String>> filters, String sort_type,
                           String criteria) {
         // Getting filters
-        // Filter:0 - year, 1 - genre
-        String filter1 = filters.get(0).get(0); //TODO: resolve magic numbers
+        String filter1 = filters.get(Constants.YEAR_FILTER_INDEX).get(Constants.FIRST_VALUE_INDEX);
         if (filter1 != null) {
             year = Integer.parseInt(filter1);
         }
 
-        String genreName = filters.get(1).get(0);
+        String genreName = filters.get(Constants.GENRE_FILTER_INDEX).get(Constants.FIRST_VALUE_INDEX);
         if (genreName != null) {
             genre = Utils.stringToGenre(genreName);
 
@@ -77,7 +80,7 @@ public class ShowQuery extends Query{
             case Constants.CRITERIA_RATINGS:
                // Filter out unrated shows
                 filteredShows = filteredShows.stream()
-                        .filter(Show::hasBeenRated)
+                        .filter(show1 -> show1.hasBeenRated())
                         .collect(Collectors.toList());
 
                 comparator = new CompareShowsAvgRating().thenComparing(titleComparator);
@@ -86,10 +89,10 @@ public class ShowQuery extends Query{
             case Constants.CRITERIA_FAVORITE:
                 // Filter out shows that are not in any user's favourite list
                 filteredShows = filteredShows.stream()
-                        .filter(show -> Utils.getUserStats(show, Constants.CRITERIA_FAVORITE) != 0)
+                        .filter(show -> Utils.getUserStats(users, show, Constants.CRITERIA_FAVORITE) != 0)
                         .collect(Collectors.toList());
 
-                comparator = new CompareShowsFavorite().thenComparing(titleComparator);
+                comparator = new CompareShowsFavorite(users).thenComparing(titleComparator);
                 break;
 
             case Constants.CRITERIA_LONGEST:
@@ -99,10 +102,10 @@ public class ShowQuery extends Query{
             case Constants.CRITERIA_MOST_VIEWED:
                 // Filter out shows that are not in any user's view history
                 filteredShows = filteredShows.stream()
-                        .filter(show -> Utils.getUserStats(show, Constants.CRITERIA_MOST_VIEWED) != 0)
+                        .filter(show -> Utils.getUserStats(users, show, Constants.CRITERIA_MOST_VIEWED) != 0)
                         .collect(Collectors.toList());
 
-                comparator = new CompareShowsMostViewed().thenComparing(titleComparator);
+                comparator = new CompareShowsMostViewed(users).thenComparing(titleComparator);
                 break;
 
             default: // Default case: sorting based on show title

@@ -18,22 +18,11 @@ public abstract class Command {
     /**
      * Constructor for commands
      */
+
     public Command(User user, String title, int seasonNumber) {
         this.user = user;
         this.title = title;
         this.seasonNumber = seasonNumber;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getSeasonNumber() {
-        return seasonNumber;
     }
 
     public abstract String execute();

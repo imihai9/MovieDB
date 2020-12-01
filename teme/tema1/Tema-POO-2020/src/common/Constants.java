@@ -74,11 +74,22 @@ public final class Constants {
     public static final int LARGE_TEST = 3;
     public static final int MAX_LENGTH = 50;
 
-    // add any constants you think you may use
+    // -- solution constants
+
+    // filter constants
+    public static final int YEAR_FILTER_INDEX  = 0;
+    public static final int GENRE_FILTER_INDEX = 1;
+    public static final int KEYWORDS_FILTER_INDEX = 2;
+    public static final int AWARDS_FILTER_INDEX = 3;
+    public static final int FIRST_VALUE_INDEX = 0;
+
+    // command-related constants:
     public static final String VIEW_COMMAND = "view";
     public static final String FAVORITE_COMMAND = "favorite";
     public static final String RATING_COMMAND = "rating";
 
+
+    // query-related constants:
     public static final String SORT_ASC = "asc";
     public static final String SORT_DESC = "desc";
 
@@ -92,7 +103,27 @@ public final class Constants {
 
     public static final String QUERY_RESULT_EMPTY = "Query result: []";
     public static final String QUERY_RESULT_PREFIX = "Query result: [";
+    public static final String RESULT_BRACKET_OPEN = "[";
     public static final String QUERY_RESULT_SUFFIX = "]";
     public static final String QUERY_RESULT_DELIMITER = ", ";
     public static final int QUERY_DELIMITER_SIZE = 2;
+
+    // recommendation-related constants:
+    public static final String STANDARD_RECOMM = "standard";
+    public static final String BEST_UNSEEN_RECOMM = "best_unseen";
+    public static final String POPULAR_RECOMM = "popular";
+    public static final String FAVORITE_RECOMM = "favorite";
+    public static final String SEARCH_RECOMM = "search";
+
+    public static final String STANDARD_RECOMM_PREFIX = "StandardRecommendation";
+    public static final String BEST_UNSEEN_RECOMM_PREFIX = "BestRatedUnseenRecommendation"; //TODO: are these right?
+    public static final String POPULAR_RECOMM_PREFIX = "PopularRecommendation";
+    public static final String FAVORITE_RECOMM_PREFIX = "FavoriteRecommendation";
+    public static final String SEARCH_RECOMM_PREFIX = "SearchRecommendation";
+
+
+    public static final String RECOMM_ERROR_SUFFIX = "cannot be applied!";
+    public static final String RECOMM_RESULTS = "result: ";
+
+    public static final String ERROR = "error";
 }

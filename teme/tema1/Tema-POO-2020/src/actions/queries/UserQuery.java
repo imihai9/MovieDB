@@ -33,16 +33,15 @@ public class UserQuery extends Query{
     @Override
     void sort(int number, String sort_type, String criteria) {
         if (criteria.equals(Constants.NUM_RATINGS)) {
-            filteredUsers = filteredUsers.stream()
-                    .filter(user -> user.getTotalRatingsNum() != 0) //TODO: here -> .sorted(comparator)
-                    .collect(Collectors.toList());
-
             Comparator<User> comparator = new CompareUsersNumRatings().thenComparing(new CompareUserNames());
-
             if (sort_type.equals(Constants.SORT_DESC))
                 comparator = comparator.reversed();
 
+            // Filter out users that didn't give any rating
+            // Sort users by number of ratings given, then by their usernames
+
             filteredUsers = filteredUsers.stream()
+                    .filter(user -> user.getTotalRatingsNum() != 0)
                     .sorted(comparator)
                     .collect(Collectors.toList());
 

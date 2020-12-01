@@ -1,7 +1,9 @@
 package user;
 
+import common.Constants;
 import entertainment.Movie;
 import entertainment.Season;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +22,7 @@ public class User  {
     /**
      * Subscription Type
      */
-    private String subscriptionType;
+    private SubscriptionType subscriptionType;
     /**
      * The history of the movies seen
      */
@@ -42,7 +44,7 @@ public class User  {
                          Map<String, Integer> history,
                          ArrayList<String> favoriteShows) {
         this.username = username;
-        this.subscriptionType = subscriptionType;
+        this.subscriptionType = Utils.stringToSubType(subscriptionType);
         this.favoriteShows = favoriteShows;
         this.history = history;
         movieRatings = new HashMap<Movie, Double>();
@@ -61,7 +63,7 @@ public class User  {
         history.put(title, timesSeen);
     }
 
-    public String getSubscriptionType() {
+    public SubscriptionType getSubscriptionType() {
         return subscriptionType;
     }
 

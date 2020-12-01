@@ -2,13 +2,18 @@ package utils;
 
 import actor.ActorsAwards;
 import common.Constants;
-import data.Data;
-import entertainment.*;
+import entertainment.Genre;
+import entertainment.Show;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import user.SubscriptionType;
 import user.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The class contains static methods that helps with parsing.
@@ -70,6 +75,18 @@ public final class Utils {
     }
 
     /**
+     * Transforms a string into an enum
+     * @param subscription type of user
+     * @return a SubscriptionType enum
+     */
+    public static SubscriptionType stringToSubType(final String subscription) {
+        return switch (subscription.toLowerCase()) {
+            case "basic" -> SubscriptionType.BASIC;
+            case "premium" -> SubscriptionType.PREMIUM;
+            default -> null;
+        };
+    }
+    /**
      * Transforms an array of JSON's into an array of strings
      * @param array of JSONs
      * @return a list of strings
@@ -89,7 +106,7 @@ public final class Utils {
     /**
      * Transforms an array of JSON's into a map
      * @param jsonActors array of JSONs
-     * @return a map with ActorsAwardsa as key and Integer as value
+     * @return a map with Actors Awards as key and Integer as value
      */
     public static Map<ActorsAwards, Integer> convertAwards(final JSONArray jsonActors) {
         Map<ActorsAwards, Integer> awards = new LinkedHashMap<>();
@@ -151,13 +168,13 @@ public final class Utils {
     }
 
     /**
+     * @param users - the list of users
      * @param show - Calculates the number of users that have the show in one of their collections:
      * @param criteria - Criteria = CRITERIA_FAVOURITE   => Collection = favouriteMovies
      *                   Criteria = CRITERIA_MOST_VIEWED => Collection = history
      * @return - the requested number of users
      */
-    public static Integer getUserStats (Show show, String criteria) {
-        List<User> users = Data.getUsers();
+    public static Integer getUserStats (List<User> users, Show show, String criteria) {
         String title = show.getTitle();
 
         Integer cnt = 0;
@@ -179,5 +196,49 @@ public final class Utils {
         }
 
         return cnt;
+    }
+
+    /**
+     * @param users - the list of users
+     * @param show - the show to be searched
+     * @return boolean - is the show in any of the users' favourite list?
+     */
+    public static boolean hasBeenFavorited (List<User> users, Show show) {
+        String title = show.getTitle();
+
+        for (User user : users) {
+            if (user.getFavoriteShows().contains(title))
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param users - the list of users
+     * @param shows - the list of shows
+     * @return - a map between the genres and the number of apparitions in users' favorite lists
+     */
+    public static Map<Genre, Integer> getFavoriteGenres (List<User> users, List<Show> shows) {
+        Map<Genre, Integer> genresPopularity = new HashMap<Genre, Integer>();
+
+        // initialize map
+        for (Genre genre : Genre.values()) {
+            genresPopularity.put(genre, 0);
+        }
+
+        for (User currUser : users) {
+            Map<String, Integer> history = currUser.getHistory();
+            for (Map.Entry<String, Integer> entry : history.entrySet()) {
+                shows.stream()
+                        .filter(show -> show.getTitle().equals(entry.getKey()))
+                        .findFirst()
+                        .ifPresent(show -> show.getGenres()
+                                 .forEach(genre -> genresPopularity.put(genre, genresPopularity.get(genre) + entry.getValue()))
+                                  );
+            }
+        }
+
+        return genresPopularity;
     }
 }

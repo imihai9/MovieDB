@@ -28,9 +28,8 @@ public class ActorQuery extends Query{
     @Override
     public String execute(int number, List<List<String>> filters, String sort_type, String criteria) {
         // Getting filters
-        // Filter:2 - keywords, 3 - awards
-        description = filters.get(2); //TODO: resolve magic numbers
-        List<String> awardNames = filters.get(3);
+        description = filters.get(Constants.KEYWORDS_FILTER_INDEX);
+        List<String> awardNames = filters.get(Constants.AWARDS_FILTER_INDEX);
 
         awards = new ArrayList<ActorsAwards>();
         if (awardNames != null)
@@ -53,7 +52,7 @@ public class ActorQuery extends Query{
         if (awards != null) {
             filteredActors = filteredActors.stream()
                     .filter(actor -> awards.stream()
-                            .allMatch(award -> actor.getAwards().containsKey(award))) //checks if actor has all awards (boolean: 0/1 - all match)
+                            .allMatch(award -> actor.getAwards().containsKey(award))) //checks if actor has all awards
                     .collect(Collectors.toList());
         }
     }
