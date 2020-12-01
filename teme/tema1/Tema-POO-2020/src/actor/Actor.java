@@ -1,5 +1,7 @@
 package actor;
 
+import actor.ActorsAwards;
+import data.Data;
 import entertainment.Show;
 
 import java.util.ArrayList;
@@ -9,11 +11,7 @@ import java.util.Map;
 /**
  * Information about an actor
  */
-public final class Actor {
-    /**
-     * awards won by the actor
-     */
-    private final Map<ActorsAwards, Integer> awards;
+public class Actor {
     /**
      * actor name
      */
@@ -26,10 +24,14 @@ public final class Actor {
      * videos starring actor
      */
     private List<Show> filmography;
+    /**
+     * awards won by the actor
+     */
+    private Map<ActorsAwards, Integer> awards;
 
     public Actor(final String name, final String careerDescription,
-                 final List<Show> filmography,
-                 final Map<ActorsAwards, Integer> awards) {
+                          final List<Show> filmography,
+                          final Map<ActorsAwards, Integer> awards) {
         this.name = name;
         this.careerDescription = careerDescription;
         this.filmography = filmography;
@@ -64,20 +66,14 @@ public final class Actor {
         this.careerDescription = careerDescription;
     }
 
-    /**
-     * Calculates the average rating of the current actor
-     * @return - the average rating, if actor's filmography is not empty and at least one of
-     *           the shows he played in was *rated*
-     *          -1, otherwise
-     */
     public Double getAvgRating() {
         if (filmography.isEmpty()) {
             return -1d;
         }
-        double totalRatings = 0d;
+        Double totalRatings = 0d;
         int numberOfRatings = 0;
 
-        for (Show show : filmography) {
+        for (Show show:filmography) {
             Double currentRating = show.getAverageRating();
             if (currentRating != 0d) {
                 totalRatings += currentRating;
@@ -85,19 +81,18 @@ public final class Actor {
             }
         }
 
-        if (numberOfRatings == 0) {
+        if (numberOfRatings == 0)
             return -1d;
-        }
         return totalRatings / numberOfRatings;
     }
 
     public int getNumOfAwards() {
         int totalNum = 0;
-        for (Map.Entry<ActorsAwards, Integer> award : awards.entrySet()) {
+        for(Map.Entry<ActorsAwards, Integer> award : awards.entrySet()) {
             totalNum += award.getValue();
         }
 
-        return totalNum;
+          return totalNum;
     }
 
     @Override

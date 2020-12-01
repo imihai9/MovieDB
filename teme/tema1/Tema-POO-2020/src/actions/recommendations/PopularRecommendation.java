@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class PopularRecommendation extends Recommendation {
-    private final List<User> userList;
+public class PopularRecommendation extends Recommendation {
     private String title;
+    private final List<User> userList;
     private List<Show> showList;
 
     public PopularRecommendation() {
@@ -25,12 +25,12 @@ public final class PopularRecommendation extends Recommendation {
         showList = Data.getShowList();
     }
 
-    private void setTitle(final String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
 
-    public String execute(final User user) {
+    public String execute(User user) {
         if (user == null || securityCheckFail(user)) {
             title = null;
             return getQueryMessage(); // return error if user is not PREMIUM
@@ -51,8 +51,7 @@ public final class PopularRecommendation extends Recommendation {
 
         while (title == null && !genresMap.isEmpty()) {
             // Gets most popular genre
-            Genre mostPopularGenre =
-                    Collections.max(genresMap.entrySet(), Map.Entry.comparingByValue()).getKey();
+            Genre mostPopularGenre = Collections.max(genresMap.entrySet(), Map.Entry.comparingByValue()).getKey();
             // Remove most popular genre (in order to get the next best genre on next iteration)
             genresMap.remove(mostPopularGenre);
 
@@ -71,7 +70,9 @@ public final class PopularRecommendation extends Recommendation {
 
         if (title == null) {
             message.append(Constants.POPULAR_RECOMM_PREFIX + " " + Constants.RECOMM_ERROR_SUFFIX);
-        } else {
+        }
+
+        else {
             message.append(Constants.POPULAR_RECOMM_PREFIX + " " + Constants.RECOMM_RESULTS);
             message.append(title);
         }

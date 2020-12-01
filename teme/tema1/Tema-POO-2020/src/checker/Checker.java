@@ -14,10 +14,8 @@ import java.util.List;
  * Checker to verify the correctness of the tests.
  */
 public final class Checker {
-    /**
-     * .
+    /**.
      * DO NOT MODIFY
-     *
      * @param directory The name of the output directory.
      */
     public void deleteFiles(final File[] directory) {
@@ -31,6 +29,7 @@ public final class Checker {
     }
 
     /**
+     *
      * @param file The file from which the data will be read
      * @return A list of queryTest objects
      * @throws IOException in case of exceptions to reading / writing
@@ -42,6 +41,7 @@ public final class Checker {
     }
 
     /**
+     *
      * @param queryTests1 first query test
      * @param queryTests2 second query test
      * @return true if the queries have the same values
@@ -63,10 +63,9 @@ public final class Checker {
 
     /**
      * Displays the score obtained after running the tests
-     *
      * @param dirOutPath output directory path
      * @param dirRefPath references directory path
-     * @param inputPath  input directory path
+     * @param inputPath input directory path
      * @throws IOException in case of exceptions to reading / writing
      */
     public void iterateFiles(final String dirOutPath, final String dirRefPath,

@@ -4,15 +4,9 @@ import user.SubscriptionType;
 import user.User;
 
 public class Recommendation {
-    /**
-     * Driver-method, will be overridden in child-classes
-     * @param user - the user to which the current recommendation is made
-     * @return - a string representing the recommendation output
-     */
-    public String execute(final User user) {
+    public String execute(User user) {
         return null;
     }
-
     String getQueryMessage() {
         return null;
     }
@@ -21,7 +15,7 @@ public class Recommendation {
      * @param user - user to be verified
      * @return - 1 if user has a premium subscription, 0 otherwise
      */
-    boolean securityCheckFail(final User user) {
+    boolean securityCheckFail(User user) {
         return !user.getSubscriptionType().equals(SubscriptionType.PREMIUM);
     }
 }

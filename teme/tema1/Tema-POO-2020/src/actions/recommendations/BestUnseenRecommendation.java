@@ -9,9 +9,9 @@ import user.User;
 import java.util.Comparator;
 import java.util.List;
 
-public final class BestUnseenRecommendation extends Recommendation {
-    private final List<Show> showList;
+public class BestUnseenRecommendation extends Recommendation{
     private String title;
+    private final List<Show> showList;
 
     public BestUnseenRecommendation() {
         title = null;
@@ -19,11 +19,11 @@ public final class BestUnseenRecommendation extends Recommendation {
         showList = Data.getShowList();
     }
 
-    private void setTitle(final String title) {
+    private void setTitle(String title) {
         this.title = title;
     }
 
-    public String execute(final User user) {
+    public String execute(User user) {
         Comparator<Show> comparator = new CompareShowsAvgRating().reversed();
 
         // Filter the show list -> only the ones not seen by user
@@ -40,9 +40,10 @@ public final class BestUnseenRecommendation extends Recommendation {
         StringBuilder message = new StringBuilder();
 
         if (title == null) {
-            message.append(
-                    Constants.BEST_UNSEEN_RECOMM_PREFIX + " " + Constants.RECOMM_ERROR_SUFFIX);
-        } else {
+            message.append(Constants.BEST_UNSEEN_RECOMM_PREFIX + " " + Constants.RECOMM_ERROR_SUFFIX);
+        }
+
+        else {
             message.append(Constants.BEST_UNSEEN_RECOMM_PREFIX + " " + Constants.RECOMM_RESULTS);
             message.append(title);
         }

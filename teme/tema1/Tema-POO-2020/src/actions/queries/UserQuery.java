@@ -1,5 +1,6 @@
 package actions.queries;
 
+import actor.Actor;
 import common.Constants;
 import comparators.CompareUserNames;
 import comparators.CompareUsersNumRatings;
@@ -11,34 +12,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class UserQuery extends Query {
+public class UserQuery extends Query{
     private List<User> filteredUsers;
 
     public UserQuery() {
-        filteredUsers = new ArrayList<>(Data.getUsers());
+        filteredUsers = new ArrayList<User>(Data.getUsers());
     }
 
     @Override
-    public String execute(final int number, final List<List<String>> filters,
-                          final String sortType, final String criteria) {
+    public String execute(int number, List<List<String>> filters, String sort_type, String criteria) {
         filter();
-        sort(number, sortType, criteria);
+        sort(number, sort_type, criteria);
 
         return getQueryMessage();
     }
 
     @Override
-    void filter() {
-    }
+    void filter() {}
 
     @Override
-    void sort(final int number, final String sortType, final String criteria) {
+    void sort(int number, String sort_type, String criteria) {
         if (criteria.equals(Constants.NUM_RATINGS)) {
-            Comparator<User> comparator =
-                    new CompareUsersNumRatings().thenComparing(new CompareUserNames());
-            if (sortType.equals(Constants.SORT_DESC)) {
+            Comparator<User> comparator = new CompareUsersNumRatings().thenComparing(new CompareUserNames());
+            if (sort_type.equals(Constants.SORT_DESC))
                 comparator = comparator.reversed();
-            }
 
             // Filter out users that didn't give any rating
             // Sort users by number of ratings given, then by their usernames
@@ -63,13 +60,12 @@ public final class UserQuery extends Query {
         }
 
         StringBuilder message = new StringBuilder(Constants.QUERY_RESULT_PREFIX);
-        for (User user : filteredUsers) {
+        for (User user:filteredUsers) {
             message.append(user.getUsername());
             message.append(Constants.QUERY_RESULT_DELIMITER);
         }
 
-        message.setLength(
-                message.length() - Constants.QUERY_DELIMITER_SIZE); // deleting the last ", "
+        message.setLength(message.length() - Constants.QUERY_DELIMITER_SIZE); // deleting the last ", "
         message.append(Constants.QUERY_RESULT_SUFFIX);
         return message.toString();
     }

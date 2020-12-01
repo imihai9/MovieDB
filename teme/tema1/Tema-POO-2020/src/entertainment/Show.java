@@ -26,7 +26,7 @@ public abstract class Show {
     private final List<Genre> genres;
 
     public Show(final String title, final int year,
-                final ArrayList<String> cast, final ArrayList<Genre> genres) {
+                     final ArrayList<String> cast, final ArrayList<Genre> genres) {
         this.title = title;
         this.year = year;
         this.cast = cast;
@@ -50,6 +50,7 @@ public abstract class Show {
     }
 
     // To be overridden
+
     public abstract Double getAverageRating();
 
     public abstract boolean hasBeenRated();

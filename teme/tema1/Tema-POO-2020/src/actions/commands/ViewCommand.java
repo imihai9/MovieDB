@@ -4,8 +4,8 @@ import user.User;
 
 import java.util.Map;
 
-public final class ViewCommand extends Command {
-    public ViewCommand(final User user, final String title, final int seasonNumber) {
+public class ViewCommand extends Command{
+    public ViewCommand(User user, String title, int seasonNumber) {
         super(user, title, seasonNumber);
     }
 
@@ -16,7 +16,8 @@ public final class ViewCommand extends Command {
         if (history.containsKey(title)) {
             int timesSeen = history.get(title);
             user.addToHistory(title, timesSeen + 1);
-        } else {
+        }
+        else {
             user.addToHistory(title, 1);
         }
 

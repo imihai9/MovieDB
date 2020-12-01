@@ -12,22 +12,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class SearchRecommendation extends Recommendation {
-    private final Genre genre;
+public class SearchRecommendation extends Recommendation {
+    private Genre genre;
     private List<Show> showList;
 
-    public SearchRecommendation(final Genre genre) {
+    public SearchRecommendation(Genre genre) {
         this.genre = genre;
         showList = Data.getShowList();
     }
 
-    public String execute(final User user) {
+    public String execute(User user) {
         if (user == null || securityCheckFail(user)) {
             return getQueryMessage(); // return error if user is not PREMIUM
         }
 
-        Comparator<Show> comparator =
-                new CompareShowsAvgRating().thenComparing(new CompareShowsTitle());
+        Comparator<Show> comparator = new CompareShowsAvgRating().thenComparing(new CompareShowsTitle());
 
         // Filter the show list -> only the ones not seen by user
         //                      -> that belong to the specified genre
@@ -38,7 +37,7 @@ public final class SearchRecommendation extends Recommendation {
                 .filter(show -> show.getGenres().contains(genre))
                 .sorted(comparator)
                 .collect(Collectors.toList());
-
+        
         return getQueryMessage();
     }
 
@@ -48,17 +47,18 @@ public final class SearchRecommendation extends Recommendation {
 
         if (showList.isEmpty()) {
             message.append(Constants.SEARCH_RECOMM_PREFIX + " " + Constants.RECOMM_ERROR_SUFFIX);
-        } else {
+        }
+
+        else {
             message.append(Constants.SEARCH_RECOMM_PREFIX + " " + Constants.RECOMM_RESULTS);
             message.append(Constants.RESULT_BRACKET_OPEN); // '['
 
-            for (Show show : showList) {
+            for (Show show:showList) {
                 message.append(show.getTitle());
                 message.append(Constants.QUERY_RESULT_DELIMITER);
             }
 
-            message.setLength(
-                    message.length() - Constants.QUERY_DELIMITER_SIZE); // deleting the last ", "
+            message.setLength(message.length() - Constants.QUERY_DELIMITER_SIZE); // deleting the last ", "
             message.append(Constants.QUERY_RESULT_SUFFIX); // ']'
         }
 

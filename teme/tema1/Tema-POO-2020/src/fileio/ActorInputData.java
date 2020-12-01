@@ -12,10 +12,6 @@ import java.util.Map;
  */
 public final class ActorInputData {
     /**
-     * awards won by the actor
-     */
-    private final Map<ActorsAwards, Integer> awards;
-    /**
      * actor name
      */
     private String name;
@@ -27,6 +23,10 @@ public final class ActorInputData {
      * videos starring actor
      */
     private ArrayList<String> filmography;
+    /**
+     * awards won by the actor
+     */
+    private Map<ActorsAwards, Integer> awards;
 
     public ActorInputData(final String name, final String careerDescription,
                           final ArrayList<String> filmography,

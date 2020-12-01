@@ -1,23 +1,34 @@
 package main;
 
-import checker.Checker;
+import actions.commands.Command;
+import actions.commands.FavoriteCommand;
+import actions.commands.RatingCommand;
+import actions.commands.ViewCommand;
+import actor.Actor;
 import checker.Checkstyle;
+import checker.Checker;
 import common.Constants;
 import data.Data;
-import fileio.Input;
-import fileio.InputLoader;
-import fileio.Writer;
+import entertainment.Movie;
+import entertainment.Serial;
+import fileio.*;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import user.User;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+//import entities.Action;
 
 /**
- * The entry point to this homework. It runs the checker that tests your implementation.
+ * The entry point to this homework. It runs the checker that tests your implentation.
  */
 public final class Main {
     /**
@@ -28,7 +39,6 @@ public final class Main {
 
     /**
      * Call the main checker and the coding style checker
-     *
      * @param args from command line
      * @throws IOException in case of exceptions to reading / writing
      */

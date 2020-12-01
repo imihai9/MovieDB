@@ -9,10 +9,10 @@ import utils.Utils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final  class FavoriteRecommendation extends Recommendation {
-    private final List<User> userList;
+public class FavoriteRecommendation extends Recommendation {
     private String title;
     private List<Show> showList;
+    private final List<User> userList;
 
     public FavoriteRecommendation() {
         title = null;
@@ -20,7 +20,7 @@ public final  class FavoriteRecommendation extends Recommendation {
         userList = Data.getUsers();
     }
 
-    public String execute(final User user) {
+    public String execute(User user) {
         if (user == null || securityCheckFail(user)) {
             title = null;
             return getQueryMessage(); // return error if user is not PREMIUM
@@ -36,7 +36,7 @@ public final  class FavoriteRecommendation extends Recommendation {
         Show mostFavoriteShow = null;
         int maxNumOfFavorites = -1;
 
-        for (Show show : showList) {
+        for (Show show:showList) {
             int numOfFavorites = Utils.getUserStats(userList, show, Constants.CRITERIA_FAVORITE);
             if (numOfFavorites > maxNumOfFavorites) {
                 maxNumOfFavorites = numOfFavorites;
@@ -44,9 +44,8 @@ public final  class FavoriteRecommendation extends Recommendation {
             }
         }
 
-        if (mostFavoriteShow != null) {
+        if (mostFavoriteShow != null)
             title = mostFavoriteShow.getTitle();
-        }
 
         return getQueryMessage();
     }
@@ -57,7 +56,9 @@ public final  class FavoriteRecommendation extends Recommendation {
 
         if (title == null) {
             message.append(Constants.FAVORITE_RECOMM_PREFIX + " " + Constants.RECOMM_ERROR_SUFFIX);
-        } else {
+        }
+
+        else {
             message.append(Constants.FAVORITE_RECOMM_PREFIX + " " + Constants.RECOMM_RESULTS);
             message.append(title);
         }

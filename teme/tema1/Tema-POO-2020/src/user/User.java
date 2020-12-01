@@ -1,31 +1,32 @@
 package user;
 
+import common.Constants;
 import entertainment.Movie;
 import entertainment.Season;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Information about an user
  */
-public final class User {
+public class User  {
     /**
      * User's username
      */
-    private final String username;
+    private String username;
     /**
      * Subscription Type
      */
-    private final SubscriptionType subscriptionType;
+    private SubscriptionType subscriptionType;
     /**
      * The history of the movies seen
      */
-    private final Map<String, Integer> history;
+    private Map<String, Integer> history;
     /**
      * Movies added to favorites
      */
@@ -33,21 +34,21 @@ public final class User {
     /**
      * Map between movies and the corresponding ratings given by the user
      */
-    private final Map<Movie, Double> movieRatings;
+    private Map<Movie, Double> movieRatings;
     /**
      * Map between seasons and the corresponding ratings given by the user
      */
-    private final Map<Season, Double> seasonRatings;
+    private Map<Season, Double> seasonRatings;
 
-    public User(final String username, final String subscriptionType,
-                final Map<String, Integer> history,
-                final ArrayList<String> favoriteShows) {
+    public User(String username, String subscriptionType,
+                         Map<String, Integer> history,
+                         ArrayList<String> favoriteShows) {
         this.username = username;
         this.subscriptionType = Utils.stringToSubType(subscriptionType);
         this.favoriteShows = favoriteShows;
         this.history = history;
-        movieRatings = new HashMap<>();
-        seasonRatings = new HashMap<>();
+        movieRatings = new HashMap<Movie, Double>();
+        seasonRatings = new HashMap<Season, Double>();
     }
 
     public String getUsername() {
@@ -58,12 +59,7 @@ public final class User {
         return Collections.unmodifiableMap(history);
     }
 
-    /**
-     * Adds given show title to user's watch history
-     * @param title - the title of the show
-     * @param timesSeen - the times the show was watched
-     */
-    public void addToHistory(final String title, final int timesSeen) {
+    public void addToHistory(String title, int timesSeen) {
         history.put(title, timesSeen);
     }
 
@@ -75,24 +71,15 @@ public final class User {
         return Collections.unmodifiableList(favoriteShows);
     }
 
-    /**
-     * Adds given show title to user's favorite list
-     * @param title - the title of the show
-     */
-    public void addFavoriteShow(final String title) {
+    public void addFavoriteShow(String title) {
         favoriteShows.add(title);
-    }
 
+    }
     public Map<Movie, Double> getMovieRatings() {
         return Collections.unmodifiableMap(movieRatings);
     }
 
-    /**
-     * Adds given movie-rating pair to user's movieRatings map
-     * @param movie - the movie to be rated
-     * @param rating - the rating the movie will receive
-     */
-    public void addMovieRating(final Movie movie, final Double rating) {
+    public void addMovieRating(Movie movie, Double rating) {
         movieRatings.put(movie, rating);
     }
 
@@ -100,12 +87,7 @@ public final class User {
         return Collections.unmodifiableMap(seasonRatings);
     }
 
-    /**
-     * Adds given season-rating pair to user's seasonRatings map
-     * @param season - the season to be rated
-     * @param rating - the rating the season will receive
-     */
-    public void addSeasonRating(final Season season, final Double rating) {
+    public void addSeasonRating(Season season, Double rating) {
         seasonRatings.put(season, rating);
     }
 

@@ -4,9 +4,10 @@ import entertainment.Show;
 
 import java.util.Comparator;
 
-public final class CompareShowsAvgRating implements Comparator<Show> {
+public class CompareShowsAvgRating implements Comparator<Show> {
+
     @Override
-    public int compare(final Show o1, final Show o2) {
+    public int compare(Show o1, Show o2) {
         return Double.compare(o1.getAverageRating(), o2.getAverageRating());
     }
 }
