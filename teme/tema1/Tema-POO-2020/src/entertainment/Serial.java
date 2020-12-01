@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Information about a tv show
  */
-public class Serial extends Show {
+public final class Serial extends Show {
     /**
      * Number of seasons
      */
@@ -18,9 +18,9 @@ public class Serial extends Show {
     private final List<Season> seasons;
 
     public Serial(final String title, final ArrayList<String> cast,
-                           final ArrayList<Genre> genres,
-                           final int numberOfSeasons, final ArrayList<Season> seasons,
-                           final int year) {
+                  final ArrayList<Genre> genres,
+                  final int numberOfSeasons, final ArrayList<Season> seasons,
+                  final int year) {
         super(title, year, cast, genres);
         this.numberOfSeasons = numberOfSeasons;
         this.seasons = seasons;
@@ -40,9 +40,9 @@ public class Serial extends Show {
 
     @Override
     public Double getAverageRating() {
-        Double ratingSum = 0d;
+        double ratingSum = 0d;
 
-        for (Season season:seasons) {
+        for (Season season : seasons) {
             ratingSum += season.getAverageRating();
         }
 
@@ -52,9 +52,10 @@ public class Serial extends Show {
     // For ShowQuery -> a serial has been rated if at least a season has been rated
     @Override
     public boolean hasBeenRated() {
-        for (Season season:seasons) {
-            if (!season.getRatings().isEmpty())
+        for (Season season : seasons) {
+            if (!season.getRatings().isEmpty()) {
                 return true;
+            }
         }
 
         return false;
@@ -63,7 +64,7 @@ public class Serial extends Show {
     @Override
     public Integer getDuration() {
         Integer totalDuration = 0;
-        for (Season season:seasons) {
+        for (Season season : seasons) {
             totalDuration += season.getDuration();
         }
 

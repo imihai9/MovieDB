@@ -42,18 +42,19 @@ public final class Season {
     }
 
     public Double getAverageRating() {
-        if (ratings.isEmpty())
+        if (ratings.isEmpty()) {
             return 0d;
+        }
 
         Double ratingSum = 0d;
-        for (Double rating:ratings) {
+        for (Double rating : ratings) {
             ratingSum += rating;
         }
 
         return ratingSum / ratings.size();
     }
 
-    public void addRating(Double rating) {
+    public void addRating(final Double rating) {
         ratings.add(rating);
     }
 
@@ -67,4 +68,3 @@ public final class Season {
                 + '}';
     }
 }
-
