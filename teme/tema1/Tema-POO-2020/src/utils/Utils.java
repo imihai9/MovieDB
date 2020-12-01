@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * The class contains static methods that helps with parsing.
- *
+ * <p>
  * We suggest you add your static methods here or in a similar class.
  */
 public final class Utils {
@@ -29,6 +29,7 @@ public final class Utils {
 
     /**
      * Transforms a string into an enum
+     *
      * @param genre of video
      * @return an Genre Enum
      */
@@ -60,6 +61,7 @@ public final class Utils {
 
     /**
      * Transforms a string into an enum
+     *
      * @param award for actors
      * @return an ActorsAwards Enum
      */
@@ -76,6 +78,7 @@ public final class Utils {
 
     /**
      * Transforms a string into an enum
+     *
      * @param subscription type of user
      * @return a SubscriptionType enum
      */
@@ -86,8 +89,10 @@ public final class Utils {
             default -> null;
         };
     }
+
     /**
      * Transforms an array of JSON's into an array of strings
+     *
      * @param array of JSONs
      * @return a list of strings
      */
@@ -105,6 +110,7 @@ public final class Utils {
 
     /**
      * Transforms an array of JSON's into a map
+     *
      * @param jsonActors array of JSONs
      * @return a map with Actors Awards as key and Integer as value
      */
@@ -122,6 +128,7 @@ public final class Utils {
 
     /**
      * Transforms an array of JSON's into a map
+     *
      * @param movies array of JSONs
      * @return a map with String as key and Integer as value
      */
@@ -143,12 +150,13 @@ public final class Utils {
 
     /**
      * Performs a case insensitive search of all strings from 'words' in 'string' as separate words
-     * @param string - haystack string
+     *
+     * @param stringIn      - haystack string
      * @param description - needles (the strings which must be contained in 'string')
      * @return - boolean value: true if 'string' contains all 'words'
      */
-    public static boolean containsAllWords(String string, List<String> description) {
-        string = string.toLowerCase();
+    public static boolean containsAllWords(final String stringIn, final List<String> description) {
+        String string = stringIn.toLowerCase();
         String[] separateWords = string.split("[^a-zA-Z0-9]");
 
         for (String w1 : description) {
@@ -160,38 +168,41 @@ public final class Utils {
                 }
             }
 
-            if (!foundWord)
+            if (!foundWord) {
                 return false;
+            }
         }
 
         return true;
     }
 
     /**
-     * @param users - the list of users
-     * @param show - Calculates the number of users that have the show in one of their collections:
+     * @param users    - the list of users
+     * @param show     - Calculates the number of users that have the show in one of their
+     *                 collections:
      * @param criteria - Criteria = CRITERIA_FAVOURITE   => Collection = favouriteMovies
-     *                   Criteria = CRITERIA_MOST_VIEWED => Collection = history
+     *                 Criteria = CRITERIA_MOST_VIEWED => Collection = history
      * @return - the requested number of users
      */
-    public static Integer getUserStats (List<User> users, Show show, String criteria) {
+    public static Integer getUserStats(final List<User> users, final Show show,
+                                       final String criteria) {
         String title = show.getTitle();
 
         Integer cnt = 0;
 
         if (criteria.equals(Constants.CRITERIA_FAVORITE)) {
             for (User user : users) {
-                if (user.getFavoriteShows().contains(title))
+                if (user.getFavoriteShows().contains(title)) {
                     cnt++;
+                }
             }
-        }
-
-        else if (criteria.equals(Constants.CRITERIA_MOST_VIEWED)) {
+        } else if (criteria.equals(Constants.CRITERIA_MOST_VIEWED)) {
             for (User user : users) {
                 Map<String, Integer> userHistory = user.getHistory();
 
-                if (userHistory.containsKey(title))
+                if (userHistory.containsKey(title)) {
                     cnt += userHistory.get(title);
+                }
             }
         }
 
@@ -200,15 +211,16 @@ public final class Utils {
 
     /**
      * @param users - the list of users
-     * @param show - the show to be searched
+     * @param show  - the show to be searched
      * @return boolean - is the show in any of the users' favourite list?
      */
-    public static boolean hasBeenFavorited (List<User> users, Show show) {
+    public static boolean hasBeenFavorited(final List<User> users, final Show show) {
         String title = show.getTitle();
 
         for (User user : users) {
-            if (user.getFavoriteShows().contains(title))
+            if (user.getFavoriteShows().contains(title)) {
                 return true;
+            }
         }
 
         return false;
@@ -219,8 +231,9 @@ public final class Utils {
      * @param shows - the list of shows
      * @return - a map between the genres and the number of apparitions in users' favorite lists
      */
-    public static Map<Genre, Integer> getFavoriteGenres (List<User> users, List<Show> shows) {
-        Map<Genre, Integer> genresPopularity = new HashMap<Genre, Integer>();
+    public static Map<Genre, Integer> getFavoriteGenres(final List<User> users,
+                                                        final List<Show> shows) {
+        Map<Genre, Integer> genresPopularity = new HashMap<>();
 
         // initialize map
         for (Genre genre : Genre.values()) {
@@ -234,8 +247,9 @@ public final class Utils {
                         .filter(show -> show.getTitle().equals(entry.getKey()))
                         .findFirst()
                         .ifPresent(show -> show.getGenres()
-                                 .forEach(genre -> genresPopularity.put(genre, genresPopularity.get(genre) + entry.getValue()))
-                                  );
+                                .forEach(genre -> genresPopularity
+                                        .put(genre, genresPopularity.get(genre) + entry.getValue()))
+                        );
             }
         }
 

@@ -28,12 +28,9 @@ public final class InputLoader {
         this.inputPath = inputPath;
     }
 
-    public String getInputPath() {
-        return inputPath;
-    }
-
     /**
      * The method reads the database
+     *
      * @return an Input object
      */
     public Input readData() {
@@ -170,6 +167,7 @@ public final class InputLoader {
 
     /**
      * The method reads the actions from input file
+     *
      * @param jsonObject
      * @param size
      * @return A list of actions
@@ -231,45 +229,45 @@ public final class InputLoader {
 
                 switch (actionType) {
 
-                        case Constants.COMMAND -> actions.add(new ActionInputData(
-                                Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
-                                        .toString()),
-                                actionType,
-                                (String) ((JSONObject) jsonIterator).get(Constants.TYPE),
-                                (String) ((JSONObject) jsonIterator).get(Constants.USER),
-                                (String) ((JSONObject) jsonIterator).get(Constants.TITLE),
-                                grade,
-                                season
-                        ));
-                        case Constants.QUERY -> actions.add(new ActionInputData(
-                                Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
-                                        .toString()),
-                                actionType,
-                                (String) ((JSONObject) jsonIterator).get(Constants.OBJECT),
-                                genre,
-                                (String) ((JSONObject) jsonIterator).get(Constants.SORT),
-                                (String) ((JSONObject) jsonIterator).get(Constants.CRITERIA),
-                                year,
-                                number,
-                                Utils.convertJSONArray(words),
-                                Utils.convertJSONArray(awards)
-                        ));
-                        case Constants.RECOMMENDATION -> actions.add(new ActionInputData(
-                                Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
-                                        .toString()),
-                                actionType,
-                                (String) ((JSONObject) jsonIterator).get(Constants.TYPE),
-                                (String) ((JSONObject) jsonIterator).get(Constants.USERNAME),
-                                (String) ((JSONObject) jsonIterator).get(Constants.GENRE)
-                        ));
-                        default -> {
-                        }
+                    case Constants.COMMAND -> actions.add(new ActionInputData(
+                            Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
+                                    .toString()),
+                            actionType,
+                            (String) ((JSONObject) jsonIterator).get(Constants.TYPE),
+                            (String) ((JSONObject) jsonIterator).get(Constants.USER),
+                            (String) ((JSONObject) jsonIterator).get(Constants.TITLE),
+                            grade,
+                            season
+                    ));
+                    case Constants.QUERY -> actions.add(new ActionInputData(
+                            Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
+                                    .toString()),
+                            actionType,
+                            (String) ((JSONObject) jsonIterator).get(Constants.OBJECT),
+                            genre,
+                            (String) ((JSONObject) jsonIterator).get(Constants.SORT),
+                            (String) ((JSONObject) jsonIterator).get(Constants.CRITERIA),
+                            year,
+                            number,
+                            Utils.convertJSONArray(words),
+                            Utils.convertJSONArray(awards)
+                    ));
+                    case Constants.RECOMMENDATION -> actions.add(new ActionInputData(
+                            Integer.parseInt(((JSONObject) jsonIterator).get(Constants.ID)
+                                    .toString()),
+                            actionType,
+                            (String) ((JSONObject) jsonIterator).get(Constants.TYPE),
+                            (String) ((JSONObject) jsonIterator).get(Constants.USERNAME),
+                            (String) ((JSONObject) jsonIterator).get(Constants.GENRE)
+                    ));
+                    default -> {
                     }
                 }
-            } else {
-                System.out.println("NU EXISTA COMENZI");
-                actions = null;
             }
+        } else {
+            System.out.println("NU EXISTA COMENZI");
+            actions = null;
+        }
 
         return actions;
     }
