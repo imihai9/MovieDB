@@ -3,11 +3,14 @@ package fileio.input;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Consumer;
-import entities.CostChange;
 import entities.Distributor;
-import entities.MonthlyUpdate;
+import entities.Producer;
 import factories.ConsumerFactory;
 import factories.DistributorFactory;
+import factories.ProducerFactory;
+import updates.DistributorChange;
+import updates.MonthlyUpdate;
+import updates.ProducerChange;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +32,9 @@ public final class InputLoader {
     }
 
     public Input readInitialData(final File inputFile) throws IOException {
-        Input input = new Input();
-
         List<Consumer> consumerList = new ArrayList<>();
         List<Distributor> distributorList = new ArrayList<>();
+        List<Producer> producerList = new ArrayList<>();
         List<MonthlyUpdate> monthlyUpdateList = new ArrayList<>();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -42,6 +44,7 @@ public final class InputLoader {
 
         JsonNode consumerListRoot = root.at("/initialData/consumers");
         JsonNode distributorListRoot = root.at("/initialData/distributors");
+        JsonNode producerListRoot = root.at("/initialData/producers");
         JsonNode monthlyUpdateListRoot = root.at("/monthlyUpdates");
 
         for (JsonNode consumerNode : consumerListRoot) {
@@ -57,12 +60,21 @@ public final class InputLoader {
                     "basic distributor", distributorInput));
         }
 
+        for (JsonNode producerNode : producerListRoot) {
+            ProducerInput producerInput = mapper.treeToValue(producerNode,
+                    ProducerInput.class);
+            producerList.add(ProducerFactory.getInstance().createProducer(
+                    "basic producer", producerInput));
+        }
+
         for (JsonNode monthlyUpdateNode : monthlyUpdateListRoot) {
             JsonNode newConsumersListRoot = monthlyUpdateNode.at("/newConsumers");
-            JsonNode costsChangesListRoot = monthlyUpdateNode.at("/costsChanges");
+            JsonNode distributorChangesListRoot = monthlyUpdateNode.at("/distributorChanges");
+            JsonNode producerChangesListRoot = monthlyUpdateNode.at("/producerChanges");
 
             List<Consumer> newConsumerList = new ArrayList<>();
-            List<CostChange> costChangeList = new ArrayList<>();
+            List<DistributorChange> distributorChangeList = new ArrayList<>();
+            List<ProducerChange> producerChangeList = new ArrayList<>();
 
             for (JsonNode newConsumerNode : newConsumersListRoot) {
                 ConsumerInput consumerInput =
@@ -70,13 +82,22 @@ public final class InputLoader {
                 newConsumerList.add(ConsumerFactory.getInstance().createConsumer(
                         "basic consumer", consumerInput));
             }
-            for (JsonNode costChangeNode : costsChangesListRoot) {
-                costChangeList.add(mapper.treeToValue(costChangeNode, CostChange.class));
+
+            for (JsonNode distributorChangeNode : distributorChangesListRoot) {
+                distributorChangeList.add(mapper.treeToValue(distributorChangeNode,
+                        DistributorChange.class));
             }
 
-            monthlyUpdateList.add(new MonthlyUpdate(newConsumerList, costChangeList));
+            for (JsonNode producerChangeNode : producerChangesListRoot) {
+                producerChangeList.add(mapper.treeToValue(producerChangeNode,
+                        ProducerChange.class));
+            }
+
+            monthlyUpdateList.add(new MonthlyUpdate(newConsumerList, distributorChangeList,
+                    producerChangeList));
         }
 
-        return new Input(numberOfTurns, consumerList, distributorList, monthlyUpdateList);
+        return new Input(numberOfTurns, consumerList, distributorList, producerList,
+                monthlyUpdateList);
     }
 }

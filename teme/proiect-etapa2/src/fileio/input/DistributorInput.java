@@ -1,11 +1,14 @@
 package fileio.input;
 
+import strategies.EnergyChoiceStrategyType;
+
 public final class DistributorInput {
     private int id;
     private int contractLength;
     private int initialBudget;
     private int initialInfrastructureCost;
-    private int initialProductionCost;
+    private int energyNeededKW; // ii
+    private EnergyChoiceStrategyType producerStrategy; // ii
 
     public int getId() {
         return id;
@@ -39,11 +42,19 @@ public final class DistributorInput {
         this.initialInfrastructureCost = initialInfrastructureCost;
     }
 
-    public int getInitialProductionCost() {
-        return initialProductionCost;
+    public int getEnergyNeededKW() {
+        return energyNeededKW;
     }
 
-    public void setInitialProductionCost(final int productionCost) {
-        this.initialProductionCost = productionCost;
+    public void setEnergyNeededKW(int energyNeededKW) {
+        this.energyNeededKW = energyNeededKW;
+    }
+
+    public EnergyChoiceStrategyType getProducerStrategy() {
+        return producerStrategy;
+    }
+
+    public void setProducerStrategy(EnergyChoiceStrategyType producerStrategy) {
+        this.producerStrategy = producerStrategy;
     }
 }

@@ -2,6 +2,7 @@ package fileio.output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import entities.Consumer;
 
 @JsonPropertyOrder({"id", "isBankrupt", "budget"})
 public final class ConsumerOutput {
@@ -9,10 +10,10 @@ public final class ConsumerOutput {
     private final boolean isBankrupt;
     private final int budget;
 
-    public ConsumerOutput(final int id, final boolean isBankrupt, final int budget) {
-        this.id = id;
-        this.isBankrupt = isBankrupt;
-        this.budget = budget;
+    public ConsumerOutput(final Consumer consumer) {
+        this.id = consumer.getId();
+        this.isBankrupt = consumer.isBankrupt();
+        this.budget = consumer.getBudget();
     }
 
     @JsonProperty("id")
