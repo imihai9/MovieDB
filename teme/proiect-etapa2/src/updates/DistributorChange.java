@@ -19,12 +19,4 @@ public final class DistributorChange {
     public void setInfrastructureCost(final int infrastructureCost) {
         this.infrastructureCost = infrastructureCost;
     }
-
-    @Override
-    public String toString() {
-        return "DistributorChange{" +
-                "id=" + id +
-                ", infrastructureCost=" + infrastructureCost +
-                '}';
-    }
 }

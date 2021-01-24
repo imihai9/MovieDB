@@ -19,12 +19,4 @@ public class ProducerChange {
     public void setEnergyPerDistributor(int energyPerDistributor) {
         this.energyPerDistributor = energyPerDistributor;
     }
-
-    @Override
-    public String toString() {
-        return "ProducerChange{" +
-                "id=" + id +
-                ", energyPerDistributor=" + energyPerDistributor +
-                '}';
-    }
 }

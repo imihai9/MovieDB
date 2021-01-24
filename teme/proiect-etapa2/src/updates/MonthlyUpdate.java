@@ -5,9 +5,9 @@ import entities.Consumer;
 import java.util.List;
 
 public final class MonthlyUpdate {
-    private List<Consumer> newConsumers;
     private final List<DistributorChange> distributorChanges;
     private final List<ProducerChange> producerChanges;
+    private List<Consumer> newConsumers;
 
     public MonthlyUpdate(final List<Consumer> newConsumers,
                          final List<DistributorChange> distributorChanges,
