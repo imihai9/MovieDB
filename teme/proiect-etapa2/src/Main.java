@@ -15,7 +15,8 @@ import java.io.FileWriter;
  */
 public final class Main {
 
-    private Main() { }
+    private Main() {
+    }
 
     /**
      * Main function which reads the input file and starts simulation
@@ -34,14 +35,14 @@ public final class Main {
             simulation.execute();
         }
 
-        Output output = new Output(inputData.getConsumerList(), inputData.getDistributorList());
+        Output output = new Output(inputData.getConsumerList(), inputData.getDistributorList(),
+                inputData.getProducerList());
 
         FileWriter fileWriter = new FileWriter(args[1]);
 
         ObjectWriter jsonWriter = new ObjectMapper()
                 .configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false)
                 .writer(new DefaultPrettyPrinter());
-
 
         jsonWriter.writeValue(fileWriter, output);
         fileWriter.write('\n');
