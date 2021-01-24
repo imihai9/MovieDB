@@ -1,9 +1,8 @@
-package entities;
+package updates;
 
-public final class CostChange {
+public final class DistributorChange {
     private int id;
     private int infrastructureCost;
-    private int productionCost;
 
     public int getId() {
         return id;
@@ -21,11 +20,11 @@ public final class CostChange {
         this.infrastructureCost = infrastructureCost;
     }
 
-    public int getProductionCost() {
-        return productionCost;
-    }
-
-    public void setProductionCost(final int productionCost) {
-        this.productionCost = productionCost;
+    @Override
+    public String toString() {
+        return "DistributorChange{" +
+                "id=" + id +
+                ", infrastructureCost=" + infrastructureCost +
+                '}';
     }
 }
