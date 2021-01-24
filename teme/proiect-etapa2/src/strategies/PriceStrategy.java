@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PriceStrategy implements EnergyChoiceStrategy {
+public final class PriceStrategy implements EnergyChoiceStrategy {
     private final List<Producer> producerList;
     private final Distributor distributor;
 

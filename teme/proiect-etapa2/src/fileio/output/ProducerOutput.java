@@ -10,7 +10,7 @@ import java.util.List;
 @JsonPropertyOrder({"id", "maxDistributors", "priceKW", "energyType", "energyPerDistributor",
         "monthlyStats"})
 
-public class ProducerOutput {
+public final class ProducerOutput {
     private final int id;
     private final int maxDistributors;
     private final double priceKW;

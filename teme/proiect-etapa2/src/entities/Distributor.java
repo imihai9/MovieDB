@@ -135,6 +135,9 @@ public final class Distributor extends NetworkEntity implements Observer {
         return (int) Math.round(Math.floor(Constants.PROFIT_FACTOR * productionCost));
     }
 
+    /**
+     * Generates the new production cost for the current distributor
+     */
     public void calculateProductionCost() {
         double cost = 0;
         for (Producer producer : producers) {
@@ -182,6 +185,9 @@ public final class Distributor extends NetworkEntity implements Observer {
         this.budget += totalMonthPayments;
     }
 
+    /**
+     * Declares bankruptcy; destroys contracts it has with its customers
+     */
     public void declareBankruptcy() {
         this.bankrupt = true;
         Iterator<Contract> it = this.contractList.iterator();

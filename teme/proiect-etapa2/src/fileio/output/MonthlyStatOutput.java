@@ -7,7 +7,7 @@ import entities.MonthlyStat;
 import java.util.List;
 
 @JsonPropertyOrder({"month", "distributorsIds"})
-public class MonthlyStatOutput {
+public final class MonthlyStatOutput {
     private final int month;
     private final List<Integer> distributorsIds;
 

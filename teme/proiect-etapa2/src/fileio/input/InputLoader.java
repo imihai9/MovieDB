@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class InputLoader {
-    // Singleton class (it has no state)
     private static InputLoader instance = null;
 
     private InputLoader() {
@@ -31,6 +30,10 @@ public final class InputLoader {
         return instance;
     }
 
+    /**
+     * Reads initial data from the inputFile, places it into lists
+     * Creates an Input object that holds the lists
+     */
     public Input readInitialData(final File inputFile) throws IOException {
         List<Consumer> consumerList = new ArrayList<>();
         List<Distributor> distributorList = new ArrayList<>();

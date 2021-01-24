@@ -3,7 +3,7 @@ package entities;
 import java.util.Collections;
 import java.util.List;
 
-public class MonthlyStat {
+public final class MonthlyStat {
     private final int month;
     private final List<Integer> distributorsIds;
 

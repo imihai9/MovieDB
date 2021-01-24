@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GreenStrategy implements EnergyChoiceStrategy {
+public final class GreenStrategy implements EnergyChoiceStrategy {
     private final List<Producer> producerList;
     private final Distributor distributor;
 

@@ -11,6 +11,12 @@ import strategies.QuantityStrategy;
 import java.util.List;
 
 public final class EnergyChoiceStrategyFactory {
+    private EnergyChoiceStrategyFactory() {
+    }
+
+    /**
+     * Factory method for creating an EnergyChoice Strategy
+     */
     public static EnergyChoiceStrategy createStrategy(EnergyChoiceStrategyType strategyType,
                                                       List<Producer> producerList,
                                                       Distributor distributor) {

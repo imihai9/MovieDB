@@ -123,11 +123,10 @@ public final class Simulation {
                         .findFirst()
                         .orElse(null);
 
-                // Update changes in producers
+                // Update changes in producers & notify distributor clients about them
 
                 if (producer != null) {
                     producer.setEnergyPerDistributor(producerChange.getEnergyPerDistributor());
-                    producer.notifyObservers();
                 }
             }
         }

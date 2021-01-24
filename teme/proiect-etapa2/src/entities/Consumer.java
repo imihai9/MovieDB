@@ -30,6 +30,9 @@ public final class Consumer extends NetworkEntity {
         this.monthlyIncome = monthlyIncome;
     }
 
+    /**
+     * Add monthly income to current consumer's budget
+     */
     public void receiveMonthlyIncome() {
         this.budget += monthlyIncome;
     }
@@ -42,8 +45,11 @@ public final class Consumer extends NetworkEntity {
         this.contract = null;
     }
 
-    public void acceptContract(final Contract contract) {
-        this.contract = contract;
+    /**
+     * Updates the consumer-distributor contract
+     */
+    public void acceptContract(final Contract newContract) {
+        this.contract = newContract;
     }
 
     /**

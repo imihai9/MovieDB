@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Producer extends NetworkEntity implements Subject {
+public final class Producer extends NetworkEntity implements Subject {
     private final EnergyType energyType;
     private final int maxDistributors;
     private final double priceKW;
@@ -26,10 +26,6 @@ public class Producer extends NetworkEntity implements Subject {
         this.distributors = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
-    }
-
     public EnergyType getEnergyType() {
         return energyType;
     }
@@ -46,8 +42,12 @@ public class Producer extends NetworkEntity implements Subject {
         return energyPerDistributor;
     }
 
+    /**
+     * Changes energy per distributor, notifies the distributors
+     */
     public void setEnergyPerDistributor(int energyPerDistributor) {
         this.energyPerDistributor = energyPerDistributor;
+        this.notifyObservers();
     }
 
     public List<Distributor> getDistributors() {
@@ -57,7 +57,6 @@ public class Producer extends NetworkEntity implements Subject {
     public List<MonthlyStat> getMonthlyStats() {
         return Collections.unmodifiableList(monthlyStats);
     }
-
 
     /**
      * Adds a distributor to the observers list
@@ -80,6 +79,9 @@ public class Producer extends NetworkEntity implements Subject {
         }
     }
 
+    /**
+     * Notifies distributor clients about energy
+     */
     @Override
     public void notifyObservers() {
         for (Distributor distributor : distributors) {
