@@ -2,12 +2,17 @@ package simulation;
 
 import entities.Consumer;
 import entities.Contract;
-import entities.CostChange;
 import entities.Distributor;
-import entities.MonthlyUpdate;
+import entities.Producer;
+import factories.EnergyChoiceStrategyFactory;
 import fileio.input.Input;
+import strategies.EnergyChoiceStrategy;
+import updates.DistributorChange;
+import updates.MonthlyUpdate;
+import updates.ProducerChange;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +23,7 @@ public final class Simulation {
     // Lists of entities loaded and updated at each round Simulation
 
     private final List<Distributor> distributorsList;
+    private final List<Producer> producersList;
     private List<Consumer> consumersList;
 
     public Simulation(final Input inputData, final int round) {
@@ -27,9 +33,16 @@ public final class Simulation {
         // Getting the lists of the entities that are still in the game
         this.distributorsList = inputData.getDistributorList().stream()
                 .filter(d -> !d.isBankrupt())
+                .sorted(Comparator.comparingInt(Distributor::getId))
                 .collect(Collectors.toList());
         this.consumersList = inputData.getConsumerList().stream()
                 .filter(c -> !c.isBankrupt())
+                .sorted(Comparator.comparingInt(Consumer::getId))
+                .collect(Collectors.toList());
+
+        // List of producers - sorted by their ids
+        this.producersList = inputData.getProducerList().stream()
+                .sorted(Comparator.comparingInt(Producer::getId))
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +77,8 @@ public final class Simulation {
      */
     void processBankruptDistributors(final List<Distributor> bankruptDistributors) {
         for (Distributor distributor : bankruptDistributors) {
-            distributor.declareBankruptcy(consumersList);
+            distributor.declareBankruptcy();
+            removeProducers(distributor);
         }
     }
 
@@ -85,17 +99,36 @@ public final class Simulation {
     void readMonthlyUpdates() {
         MonthlyUpdate monthlyUpdate = inputData.getMonthlyUpdateList().get(round - 1);
 
-        List<CostChange> costChanges = monthlyUpdate.getCostChanges();
-        if (!costChanges.isEmpty()) {
-            for (CostChange costChange : costChanges) {
+        List<DistributorChange> distributorChanges = monthlyUpdate.getDistributorChanges();
+        List<ProducerChange> producerChanges = monthlyUpdate.getProducerChanges();
+
+        if (!distributorChanges.isEmpty()) {
+            for (DistributorChange distribChange : distributorChanges) {
                 Distributor distributor = inputData.getDistributorList().stream()
-                        .filter(d -> d.getId() == costChange.getId())
+                        .filter(d -> d.getId() == distribChange.getId())
                         .findFirst()
                         .orElse(null);
 
                 // Update changes in distributors
-                distributor.setInfrastructureCost(costChange.getInfrastructureCost());
-                distributor.setProductionCost(costChange.getProductionCost());
+                if (distributor != null) {
+                    distributor.setInfrastructureCost(distribChange.getInfrastructureCost());
+                }
+            }
+        }
+
+        if (!producerChanges.isEmpty()) {
+            for (ProducerChange producerChange : producerChanges) {
+                Producer producer = inputData.getProducerList().stream()
+                        .filter(p -> p.getId() == producerChange.getId())
+                        .findFirst()
+                        .orElse(null);
+
+                // Update changes in producers
+
+                if (producer != null) {
+                    producer.setEnergyPerDistributor(producerChange.getEnergyPerDistributor());
+                    producer.notifyObservers();
+                }
             }
         }
 
@@ -113,6 +146,30 @@ public final class Simulation {
         }
     }
 
+    void chooseProducer(Distributor distributor) {
+        // Choose & add producers to current distributor
+        EnergyChoiceStrategy strategy = EnergyChoiceStrategyFactory.createStrategy(
+                distributor.getProducerStrategy(), producersList, distributor);
+
+        if (strategy != null) {
+            distributor.setProducers(strategy.chooseProducers());
+        }
+
+        // Add current distributor to its producers' lists
+        for (Producer producer : distributor.getProducers()) {
+            producer.addObserver(distributor);
+        }
+    }
+
+    void removeProducers(Distributor distributor) {
+        for (Producer producer : distributor.getProducers()) {
+            producer.removeObserver(distributor);
+        }
+
+        // Remove old producers from distributor
+        distributor.setProducers(null);
+    }
+
     /**
      * Driver function for the round simulation
      */
@@ -120,8 +177,11 @@ public final class Simulation {
         List<Distributor> bankruptDistributors = new ArrayList<>();
 
         if (round == 0) {
-            // Calculating the initial contract costs for each distributor (no clients)
             for (Distributor distributor : distributorsList) {
+                // Choosing the initial producers for each distributor
+                chooseProducer(distributor);
+                // Calculating the initial prod & contract costs for each distributor (no clients)
+                distributor.calculateProductionCost();
                 distributor.calculateContractCost();
             }
 
@@ -166,5 +226,29 @@ public final class Simulation {
         }
 
         monthPassed();
+
+        // Gets all distributors that must change their producers this round
+        List<Distributor> distributorsNewProducer = distributorsList.stream()
+                .filter(Distributor::getPickProducer)
+                .sorted(Comparator.comparingInt(Distributor::getId))
+                .collect(Collectors.toList());
+
+        for (Distributor distributor : distributorsNewProducer) {
+            // Remove distributor from their old producers
+            removeProducers(distributor);
+            // Choose new producers
+            chooseProducer(distributor);
+
+            // Unset "must choose producer" flag
+            distributor.unsetPickProducer();
+            distributor.calculateProductionCost();
+        }
+
+        if (round >= 1) {
+            for (Producer producer : producersList) {
+                producer.logMonthlyStat(round);
+            }
+        }
+
     }
 }
