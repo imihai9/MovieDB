@@ -87,6 +87,7 @@ public final class Consumer extends NetworkEntity {
     /**
      * Chooses the minimum cost contract; adds it to this user and to the corresponding
      * distributor's list
+     *
      * @param distributorsList - the given list of distributors
      */
     public void chooseContract(final List<Distributor> distributorsList) {

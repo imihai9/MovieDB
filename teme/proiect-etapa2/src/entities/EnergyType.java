@@ -19,10 +19,6 @@ public enum EnergyType {
         this.renewable = renewable;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
     public boolean isRenewable() {
         return renewable;
     }

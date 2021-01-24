@@ -1,6 +1,7 @@
 package entities;
 
 import fileio.input.DistributorInput;
+import strategies.EnergyChoiceStrategyType;
 import utils.Constants;
 
 import java.util.ArrayList;
@@ -8,12 +9,19 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public final class Distributor extends NetworkEntity {
+public final class Distributor extends NetworkEntity implements Observer {
+    private final int energyNeededKW;
     private final List<Contract> contractList;
+    private List<Producer> producers;
+
     private int contractLength;
     private int infrastructureCost;
     private int productionCost;
     private int contractCost;
+    private EnergyChoiceStrategyType producerStrategyType;
+
+    private boolean pickProducer; // boolean flag, active if the current distributor
+    // is supposed to choose a new producer in the current round
 
     public Distributor(final DistributorInput distributorInput) {
         bankrupt = false;
@@ -22,9 +30,27 @@ public final class Distributor extends NetworkEntity {
 
         this.id = distributorInput.getId();
         this.budget = distributorInput.getInitialBudget();
+        this.energyNeededKW = distributorInput.getEnergyNeededKW();
         this.contractLength = distributorInput.getContractLength();
         this.infrastructureCost = distributorInput.getInitialInfrastructureCost();
-        this.productionCost = distributorInput.getInitialProductionCost();
+        this.productionCost = 0;
+        this.producerStrategyType = distributorInput.getProducerStrategy();
+
+        this.pickProducer = false;
+    }
+
+    // Getters & setters
+
+    public int getEnergyNeededKW() {
+        return energyNeededKW;
+    }
+
+    public List<Producer> getProducers() {
+        return Collections.unmodifiableList(producers);
+    }
+
+    public void setProducers(List<Producer> producers) {
+        this.producers = producers;
     }
 
     public int getContractLength() {
@@ -43,14 +69,6 @@ public final class Distributor extends NetworkEntity {
         this.infrastructureCost = infrastructureCost;
     }
 
-    public int getProductionCost() {
-        return productionCost;
-    }
-
-    public void setProductionCost(final int productionCost) {
-        this.productionCost = productionCost;
-    }
-
     public int getContractCost() {
         return contractCost;
     }
@@ -59,8 +77,42 @@ public final class Distributor extends NetworkEntity {
         return Collections.unmodifiableList(contractList);
     }
 
+    public EnergyChoiceStrategyType getProducerStrategy() {
+        return producerStrategyType;
+    }
+
+    public void setProducerStrategy(EnergyChoiceStrategyType producerStrategy) {
+        this.producerStrategyType = producerStrategy;
+    }
+
+    /**
+     * Sets the internal "must pick a producer" flag to true
+     */
+    public void setPickProducer() {
+        this.pickProducer = true;
+    }
+
+    /**
+     * Sets the internal "must pick a producer" flag to false
+     */
+    public void unsetPickProducer() {
+        this.pickProducer = false;
+    }
+
+    public boolean getPickProducer() {
+        return pickProducer;
+    }
+
+    @Override
+    public void update() {
+        setPickProducer();
+    }
+
+    // Methods
+
     /**
      * Adds contract to the distributor's contract list
+     *
      * @param contract the given contract
      */
     public void addContract(final Contract contract) {
@@ -69,6 +121,7 @@ public final class Distributor extends NetworkEntity {
 
     /**
      * Removes contract from the distributor's contract list
+     *
      * @param contract the given contract
      */
     public void removeContract(final Contract contract) {
@@ -80,6 +133,15 @@ public final class Distributor extends NetworkEntity {
      */
     public int calculateProfit() {
         return (int) Math.round(Math.floor(Constants.PROFIT_FACTOR * productionCost));
+    }
+
+    public void calculateProductionCost() {
+        double cost = 0;
+        for (Producer producer : producers) {
+            cost = cost + producer.getEnergyPerDistributor() * producer.getPriceKW();
+        }
+
+        this.productionCost = (int) Math.round(Math.floor(cost / Constants.PROD_COST_FACTOR));
     }
 
     /**
@@ -120,10 +182,7 @@ public final class Distributor extends NetworkEntity {
         this.budget += totalMonthPayments;
     }
 
-    /**
-     * @param consumersList The list of consumers
-     */
-    public void declareBankruptcy(final List<Consumer> consumersList) {
+    public void declareBankruptcy() {
         this.bankrupt = true;
         Iterator<Contract> it = this.contractList.iterator();
         while (it.hasNext()) {
@@ -174,7 +233,7 @@ public final class Distributor extends NetworkEntity {
         // Distributor receives fees from clients
         this.receiveClientsPayment(totalPayments);
 
-        // Distributor pays cost
+        // Distributor pays costs
         this.payInfrastructureCost();
         this.payProductionCost();
 
