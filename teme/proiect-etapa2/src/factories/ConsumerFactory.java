@@ -20,7 +20,6 @@ public final class ConsumerFactory {
         if (entityType.equals("basic consumer")) {
             return new Consumer(consumerInput);
         } else {
-            // maybe there are different type of customers in phase 2?
             return null;
         }
     }
