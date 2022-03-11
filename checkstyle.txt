@@ -1,0 +1,22 @@
+Starting audit...
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/StandardRecommendation.java:27:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/FavoriteRecommendation.java:23:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/BestUnseenRecommendation.java:26:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/Recommendation.java:12:36: Redundant 'final' modifier. [RedundantModifier]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/Recommendation.java:14:5: Class 'Recommendation' looks like designed for extension (can be subclassed), but the method 'getQueryMessage' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Recommendation' final or making the method 'getQueryMessage' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/PopularRecommendation.java:33:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/recommendations/SearchRecommendation.java:24:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/FavoriteCommand.java:11:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/Command.java:9:16: Variable 'user' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/Command.java:13:18: Variable 'title' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/Command.java:17:15: Variable 'seasonNumber' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/ViewCommand.java:12:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actions/commands/RatingCommand.java:18:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/actor/Actor.java:94:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/entertainment/Season.java:44:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/entertainment/Season.java:57:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/entertainment/Show.java:53:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/entertainment/Show.java:55:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] /home/mihai/teme-poo/./src/entertainment/Show.java:57:5: Missing a Javadoc comment. [MissingJavadocMethod]
+Audit done.
+Checkstyle ends with 19 errors.
